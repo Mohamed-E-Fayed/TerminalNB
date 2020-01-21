@@ -1,10 +1,12 @@
 #This module aims to  implement main functionalities  the notebook  should support. 
 import os
+from pathlib import Path
 
 #Global variables 
 iteration = int()
 project_name = str()
-project_language = str('py')
+project_language = str('py') 
+project_path = os.getcwd()
 preferred_text_editor = str() 
 
 #constants 
@@ -23,18 +25,15 @@ def create_project(name, proj_lang ='py'):
         global iteration
         global project_name 
         global project_language 
+        global project_path 
         iteration =  1 
         project_name = name 
         project_language = proj_lang 
         os.makedirs(name) 
-        os.system('cd ' + name)
+        os.chdir(str(project_path + SLASH + project_name + SLASH)) 
     except OSError:
-        if OSError.errno == errno.EXIST:
-            print('Folder already exist. We will  continue adding to it')
-            iteration = 1 # to be updated 
-            os.system('cd ' + name)
-        else:
-            print('Error: Can not  create folder.') 
+        os.chdir(project_path + SLASH + name +SLASH )
+        print('This project already exists, we will continue in it') 
         raise
 
 #create new cell 
@@ -46,7 +45,7 @@ def new_cell(cell_type):
     if not cell_type.lower() in supported_cell_types: 
         print('This type of cells is not supported')
         return 
-    os.mknod(str(cell_type + DASH + str(iteration) + DOT + project_language))
+    Path(str(cell_type + DASH + str(iteration) + DOT + project_language)).touch() 
     iteration +=1 
 
 # create new code cell
@@ -59,5 +58,3 @@ def ntc():
 
 
 
-    #main 
-    os.system('ipython') 
