@@ -1,14 +1,26 @@
 This is a little project to make an interface for terminal that acts similar to jupyter notebook. 
 These are the functionalities supported and their description:
-1. create a new cell, 
-new_cell(num, type="cell", extension="py")
+1. Create a new project:
+create_project(name, project_type='py')
+This function creates a directory in the existing "directory with name as the name of the project and the directorty. Then, it changes current directory of the process to that new directory. 
+
+2. create a new cell, 
+new_cell( cell_type)
 This will make a new coding cell , a python file by default, of the following convention: 
-        "#_type.ext". 
-# 'num' in parameters->stands for the number of cell. This will sequence according to coding cells  only. That means if you insert a new cell, it's number was 5 and there was no previous text cell, it will insert a text cell under the name of 6 to support a convention of text cell explaining the upcoming code cell.
-type->type of cell, either code or text or something else. 
-ext, 'extension' in parameters-> the extension of file. this extension should specify in which programming language the file was written. We aim to support as much programming languages as we can in the future.
+        "type_#.ext".  
+The number of the cell is determined automatically after the last existing cell. e.g. if the last cell number is 'n', then it will create cell with number 'n+1'.
+cell_type->type of cell, currently supporting code and text only.
+
+3. create new code cell
+ncc()
+This function calls "new_cell('code')". It's no more than an appreviation. 
+
+4. New text cell
+ntc()
+This function calls "new_cell('text')". It is just an appreviation.  "
+
 
 Note: the following commands assume an existing directory of specified format here 
-1. run a cell
-    In ipython, we should type "%load 1_cell.py".
-    In terminal_nb, we could type "run_cell('1')"
+1. run a cell 
+r(cell_num) | run(cell_num) 
+We could use any of the formats to run a specific cell using its number. 
