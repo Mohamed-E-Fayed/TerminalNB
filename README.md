@@ -1,8 +1,12 @@
 This is a little project to make an interface for terminal that acts similar to jupyter notebook. 
+The only way we know, till now, for using it is to copy the source file "nb_functionalities.py" into "~/.ipython/profile_default/startup/" on Mac OS and Linux.
+
 These are the functionalities supported and their description:
 1. Create a new project:
 create_project(name, project_type='py')
 This function creates a directory in the existing "directory with name as the name of the project and the directorty. Then, it changes current directory of the process to that new directory. 
+If the project already exists, it will get into the  directory of the project and update global variables code_iteration and text_iteration with the same value of the next number to be used in the code cell assuming that anyone who will write a text cell will write it before the corresponding code cell.
+
 
 2. create a new cell, 
 new_cell( cell_type)

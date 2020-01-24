@@ -1,5 +1,5 @@
-import os 
-import *
+import os  
+from . import *
 #main program 
-    os.system('ipython')
+os.system('ipython')
 
