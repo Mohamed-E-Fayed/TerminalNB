@@ -4,8 +4,9 @@ SLASH = '/'
 DOT = '.'
 DASH = '-'
 CODE = 'code'
-TEXT='text'
-supported_cell_types = [CODE, TEXT] 
+TEXT='text' 
+RESULT = 'result' 
 
+supported_cell_types = [CODE, TEXT, RESULT] 
 
 

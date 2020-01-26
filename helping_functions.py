@@ -1,6 +1,6 @@
 #Some functions to be used in other modules 
 import os 
-from .constants  import *
+from constants  import *
 
 def get_cell_name(num, cell_type = 'code', cell_extension = 'py'):
     """ 

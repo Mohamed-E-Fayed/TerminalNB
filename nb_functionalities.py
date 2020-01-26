@@ -33,19 +33,22 @@ def new_cell(cell_type):
     """
     global code_iteration 
     global text_iteration 
-    global preferred_text_editor  
     global project_name 
-    global supported_cell_types 
-    if not cell_type.lower() in supported_cell_types: 
+    global supported_cell_types  
+    cell_type = cell_type.lower() 
+    if not cell_type in supported_cell_types: 
         print('This type of cells is not supported')
         return 
-    Path(str(get_cell_name(iteration))).touch() 
     if cell_type == CODE:
+        Path(str(CODE + DASH + code_iteration + DOT + project_language))  
         code_iteration +=1 
         text_iteration = code_iteration + 1
     elif cell_type == TEXT:
+        Path(str(TEXT+ DASH + text_iteration + DOT + project_language))  
         text_iteration +=1 
         code_iteration =text_iteration
+    elif cell_type == RESULT: 
+        Path(str(RESULT + DASH + code_iteration + DOT + project_language )).touch()
 
 # create new code cell
 def ncc():
