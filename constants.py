@@ -2,8 +2,11 @@
 SPACE = ' '
 SLASH = '/' 
 DOT = '.'
-DASH = '-'
+DASH = '-' 
+GREATER_THAN = '>'
+ECHO = 'echo'
 CODE = 'code'
+<<<<<<< HEAD
 TEXT='text' 
 RESULT = 'result' 
 
