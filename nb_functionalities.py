@@ -1,6 +1,8 @@
 #This module aims to  implement main functionalities  the notebook  should support. 
 import os
-from pathlib import Path
+from pathlib import Path 
+from functools import singledispatch 
+
 from helping_functions import * 
 from constants import *
 from variables import * 
@@ -33,22 +35,24 @@ def new_cell(cell_type):
     """
     global code_iteration 
     global text_iteration 
-    global project_name 
+    global project_name  
+    global project_language
     global supported_cell_types  
     cell_type = cell_type.lower() 
     if not cell_type in supported_cell_types: 
         print('This type of cells is not supported')
         return 
     if cell_type == CODE:
-        Path(str(CODE + DASH + code_iteration + DOT + project_language))  
+        code_iteration = get_iteration() 
+        Path(str(CODE + DASH + str(code_iteration) + DOT + project_language)).touch()  
         code_iteration +=1 
         text_iteration = code_iteration + 1
     elif cell_type == TEXT:
-        Path(str(TEXT+ DASH + text_iteration + DOT + project_language))  
+        Path(str(TEXT+ DASH + str(text_iteration) + DOT + project_language)).touch()  
         text_iteration +=1 
         code_iteration =text_iteration
     elif cell_type == RESULT: 
-        Path(str(RESULT + DASH + code_iteration + DOT + project_language )).touch()
+        Path(str(RESULT + DASH + str(code_iteration) + DOT + project_language )).touch()
 
 # create new code cell
 def ncc():
@@ -115,4 +119,25 @@ def run_all():
     os.system(str(commands[0] + SPACE + ALL_CODE))  
 
 
+@singledispatch 
+def delete_cell(num, cell_type=CODE): 
+    """
+    This function deletes the cell of given number and type. It assumes the default value of cell_type is 'code'
+    """
+    os.remove(str(get_cell_name(num, cell_type = cell_type)))
 
+@delete_cell.register(str)
+def _(name):
+    """
+    This function deletes a cell of given name or number and type. 
+    """ 
+    os.remove(name)
+
+
+@singledispatch 
+def dc(num, cell_type=CODE):
+    delete_cell(num, cell_type) 
+
+@dc.register(str)
+def _(name):
+    delete_cell(name) 
