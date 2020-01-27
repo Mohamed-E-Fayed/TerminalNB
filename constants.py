@@ -3,13 +3,12 @@ SPACE = ' '
 SLASH = '/' 
 DOT = '.'
 DASH = '-' 
-GREATER_THAN = '>'
+GREATER_THAN = '>' 
+ENDL = '\n' 
 ECHO = 'echo'
 CODE = 'code'
-<<<<<<< HEAD
 TEXT='text' 
 RESULT = 'result' 
 
 supported_cell_types = [CODE, TEXT, RESULT] 
-
 

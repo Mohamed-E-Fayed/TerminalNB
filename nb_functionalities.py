@@ -39,10 +39,6 @@ def new_cell(cell_type):
     if not cell_type in supported_cell_types: 
         print('This type of cells is not supported')
         return 
-<<<<<<< HEAD
-=======
-    Path(str(get_cell_name(iteration, cell_type=cell_type))).touch() 
->>>>>>> 9fc7591e3c930ca28dc39a550c4744cd50f3989e
     if cell_type == CODE:
         Path(str(CODE + DASH + code_iteration + DOT + project_language))  
         code_iteration +=1 
@@ -84,8 +80,8 @@ def run_cell(num, result_file=True):
     global commands  
     global extensions 
     if result_file == True:
-        os.system(str(ECHO + SPACE + commands[0] + SPACE + get_cell_name(num, cell_type=CODE, extension=extensions[0]) + SPACE + GREATER_THAN + get_cell_name(num, cell_type=RESULT, extension=extensions[-1])))
-            else:
+         os.system(str(ECHO + SPACE + commands[0] + SPACE + get_cell_name(num, cell_type=CODE, extension=extensions[0]) + SPACE + GREATER_THAN + get_cell_name(num, cell_type=RESULT, extension=extensions[-1])))
+    else:
         os.system(str(commands[0] + SPACE + get_cell_name(num, cell_type=CODE, extension=extensions[0]))) 
     return 1 # indicate correct exit 
 
@@ -94,12 +90,29 @@ def rc(num, result_file=True):
 
 def run_all(): 
     """ 
-    This function runs all the code cells in the project directory.
-    """
-    global project_language 
+    This function runs all the code cells in the project directory. It's algorithm is very basic to make sure everything works well. It may be updated later.
+    The algorithm:
+    1. Open all code cells in sequence and merge all of them into a big file. 
+    2. This file is executed normally using run_cell() function.
+    """ 
+    global commands 
+    global extensions 
+    ALL_CODE = 'all_code.' + extensions[0]
     files = os.listdir() 
-    files = [f for f in files if f.find(project_language) != -1]
-    files = files.sort() 
+    files = [f for f in files if f.find(DOT + extensions[0])!= -1 and f.find(CODE + DASH) != -1 and f!= ALL_CODE ] 
+    files.sort() 
+    code = str()
     for file in files:
-        os.system(commands[project_language] + SPACE + file) #continue 
+        with open(file, 'r') as f:
+            lines = f.readlines() 
+            for line in lines:
+                code = code + line
+            code = code + ENDL
+    
+    with open(ALL_CODE, 'w' ) as f:
+        f.write(code)
+    
+    os.system(str(commands[0] + SPACE + ALL_CODE))  
+
+
 
