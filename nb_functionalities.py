@@ -1,5 +1,6 @@
 #This module aims to  implement main functionalities  the notebook  should support. 
 import os
+import shutil 
 from pathlib import Path 
 from functools import singledispatch 
 
@@ -28,10 +29,17 @@ def create_project(name, proj_lang ='py'):
         text_iteration = code_iteration 
         raise
 
+def open_project(name):
+    """
+    This function just changes the directory to be inside the project. 
+    """ 
+    os.chdir(name)
+
 #create new cell 
-def new_cell(cell_type): 
+def new_cell(cell_type=CODE, num=-1): 
     """
     Function to create a new cell. It assumes that the programmer would insert text cell before a code cell to describe the content of the cell. 
+    Regarding result cells, it just create a cell with the given code cell number. 
     """
     global code_iteration 
     global text_iteration 
@@ -42,8 +50,22 @@ def new_cell(cell_type):
     if not cell_type in supported_cell_types: 
         print('This type of cells is not supported')
         return 
+    if num == -1:
+        if code_iteration == -1:
+            code_iteration = get_iteration()
+    else:
+        cell_name = get_cell_name(num, cell_type=cell_type) 
+        if os.path.isfile(cell_name):
+            reply = input('This file already exists. Would you like to replace it with a new one?(y/n) \n').lower()
+            if reply=='y':
+                os.remove(cell_name)
+                Path(cell_name).touch()
+            elif reply =='n':
+                return 
+        Path(cell_name).touch() 
+        return
+    
     if cell_type == CODE:
-        code_iteration = get_iteration() 
         Path(str(CODE + DASH + str(code_iteration) + DOT + project_language)).touch()  
         code_iteration +=1 
         text_iteration = code_iteration + 1
@@ -59,20 +81,20 @@ def ncc():
     """
     This function creates a new code cell
     """
-    new_cell(CODE)
+    new_cell(cell_type=CODE)
 
 # create new text cell 
 def ntc():
     """
     This function creates a new text cell
     """
-    new_cell(TEXT) 
+    new_cell(cell_type=TEXT) 
 
-def nrc():
+def nrc(num):
     """
     This function creates a new results cell.
     """
-    new_cell(RESULT)
+    new_cell(cell_type=RESULT, num=num)
 
 #running cells 
 def run_cell(num, result_file=True):
@@ -83,8 +105,9 @@ def run_cell(num, result_file=True):
     global ProgrammingLanguages 
     global commands  
     global extensions 
+    global RES 
     if result_file == True:
-         os.system(str(ECHO + SPACE + commands[0] + SPACE + get_cell_name(num, cell_type=CODE, extension=extensions[0]) + SPACE + GREATER_THAN + get_cell_name(num, cell_type=RESULT, extension=extensions[-1])))
+         os.system(str(commands[0] + SPACE + get_cell_name(num, cell_type=CODE, extension=extensions[0]) + SPACE + GREATER_THAN + get_cell_name(num, cell_type=RESULT, extension=RES)))
     else:
         os.system(str(commands[0] + SPACE + get_cell_name(num, cell_type=CODE, extension=extensions[0]))) 
     return 1 # indicate correct exit 
@@ -92,7 +115,7 @@ def run_cell(num, result_file=True):
 def rc(num, result_file=True):
     return run_cell(num, result_file=result_file)
 
-def run_all(): 
+def run_all(result_file=True): 
     """ 
     This function runs all the code cells in the project directory. It's algorithm is very basic to make sure everything works well. It may be updated later.
     The algorithm:
@@ -101,7 +124,9 @@ def run_all():
     """ 
     global commands 
     global extensions 
+    global RES 
     ALL_CODE = 'all_code.' + extensions[0]
+    ALL_RESULTS = 'all_results.' + RES
     files = os.listdir() 
     files = [f for f in files if f.find(DOT + extensions[0])!= -1 and f.find(CODE + DASH) != -1 and f!= ALL_CODE ] 
     files.sort() 
@@ -116,8 +141,21 @@ def run_all():
     with open(ALL_CODE, 'w' ) as f:
         f.write(code)
     
-    os.system(str(commands[0] + SPACE + ALL_CODE))  
+    if result_file==True :
+        os.system(str(commands[0] + SPACE + ALL_CODE + GREATER_THAN + ALL_RESULTS))
+    else:
+        os.system(str(commands[0] + SPACE + ALL_CODE))  
 
+#Functions to delete project and cells. 
+def delete_project(name= None):
+    """
+    This function deletes the project folder.
+    """ 
+    if name == None:
+        name = os.getcwd() 
+        name = name[name.rfind(SLASH)+1:] 
+    os.chdir(DOT + DOT+ SLASH)
+    shutil.rmtree(name)
 
 @singledispatch 
 def delete_cell(num, cell_type=CODE): 
