@@ -2,11 +2,11 @@
 import os 
 from constants  import *
 
-def get_cell_name(num, cell_type = 'code', cell_extension = 'py'):
+def get_cell_name(num, cell_type=CODE, extension='py'):
     """ 
     This function returns the name corresponding to the given number
     """
-    return str(cell_type + DASH + str(num) + DOT + cell_extension)
+    return str(cell_type + UNDERSCO + str(num) + DOT + extension)
 def get_iteration(cell_type='code'): 
     """
     This function returns the number of iteration should be used in the upcoming code or text cell to be created. e.g. if the last cell has the number of 'n', then it should return 'n+1' to be used as the number of the next cell when creating it.

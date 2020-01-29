@@ -3,6 +3,7 @@ import os
 import shutil 
 from pathlib import Path 
 from functools import singledispatch 
+import threading 
 
 from helping_functions import * 
 from constants import *
@@ -96,8 +97,19 @@ def nrc(num):
     """
     new_cell(cell_type=RESULT, num=num)
 
-#running cells 
-def run_cell(num, result_file=True):
+#running cells  
+def run_cell(num, result_file=True): 
+    """
+    This function runs the cell of given number in a new thread. We need threads to make sure the  variables in memory are shared among all cells. 
+    Note: The order of operation affects the results.
+    """ 
+    exec(open(get_cell_name(num)).read()) 
+    """
+    t = threading.Thread(target=run_cell_thread, args=(num, result_file,))
+    t.start()
+    """
+
+def run_cell_thread(num, result_file=True):
     """
     This function is used to run code cell with given number. The result_file variable is used to indicate whether to print the output into console ,if False, or print it into a file, if True. 
     This function is working only with python3. It needs to be updated for supporting other programming languages. 
@@ -107,7 +119,7 @@ def run_cell(num, result_file=True):
     global extensions 
     global RES 
     if result_file == True:
-         os.system(str(commands[0] + SPACE + get_cell_name(num, cell_type=CODE, extension=extensions[0]) + SPACE + GREATER_THAN + get_cell_name(num, cell_type=RESULT, extension=RES)))
+        os.system(str(commands[0] + SPACE + get_cell_name(num, CODE, extension=extensions[0]) + SPACE + GREATER_THAN + get_cell_name(num, RESULT, RES)))
     else:
         os.system(str(commands[0] + SPACE + get_cell_name(num, cell_type=CODE, extension=extensions[0]))) 
     return 1 # indicate correct exit 
