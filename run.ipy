@@ -1,0 +1,2 @@
+def run_cell(name):
+    %run -i  $name 

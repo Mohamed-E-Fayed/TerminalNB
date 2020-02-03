@@ -32,8 +32,10 @@ It is mainly used by the code itself. So, it doesn't handle existing files.
 
 Note: the following commands assume an existing directory of specified format here 
 1. run a cell 
-%run -i <filename.py> # an ipython magic command
+rc(num, result_file=False) | run_cell(num, result_file=False)
 We could use any of the formats to run a specific cell using its number (num). 
+num: A number indicating the number of the cell to be run.
+result_file(not useful in current version) : A variable to determine whether the results should be written to a file or not. It's default value is False.   
 
 2. Run the entire project.
 ra(result_file=True) |run_all(result_file=True) 
