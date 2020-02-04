@@ -1,4 +1,4 @@
-This is a little project to make an interface for terminal that acts similar to jupyter notebook. 
+This is a little project to provide new functions or point to some existing functions in ipython terminal session that have similar features to that of jupyter notebook. 
 The only way we know, till now, for using it is to copy the source file "nb_functionalities.py" into "~/.ipython/profile_default/startup/" on Mac OS and Linux.
 
 These are the functionalities supported and their description:
@@ -29,6 +29,20 @@ This function calls "new_cell('text')". It is just an appreviation.  "
 6. nrc(num) 
 It generates a result cell with the given number.  This result cell is just a text file. 
 It is mainly used by the code itself. So, it doesn't handle existing files.
+
+Editing a cell:
+1. !<command> <args> #Built-in
+The first way is to use '!' to type a terminal command. It could be used with any supported command. For editing purposes, we could use it to edit a file. 
+For example, assume we want to edit '1.py' using 'vim' editor. the command will be:
+"!vim 1.py". 
+You could use any editor installed to your system. 
+
+2. %ed | %edit  #built-in magic command
+It is used to edit a specific file on the go then run it just after exiting. 
+To change the default text editor, add your favorite editor to tenvironment variables.
+For example, Add the following line, to make vim as your default text editor,  to ~/.bash_profile or ~/.bashrc if bash is your default shell. If your default shell is zsh, you will add the following line to ~/.zshrc. 
+export EDITOR="/usr/local/bin/vim"
+For more help from its documentation, type "%edit?".
 
 Note: the following commands assume an existing directory of specified format here 
 1. run a cell 
