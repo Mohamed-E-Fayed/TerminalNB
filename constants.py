@@ -15,3 +15,4 @@ supported_cell_types = [CODE, TEXT, RESULT]
 #file extensions 
 RES='res' #extension for results files.
 TXT= 'txt' #extension for text files. 
+PY='py' 

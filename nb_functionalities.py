@@ -37,7 +37,7 @@ def open_project(name):
     os.chdir(name)
 
 #create new cell 
-def new_cell(cell_type=CODE, num=-1): 
+def new_cell(cell_type=CODE, num=-1, extension='py'): 
     """
     Function to create a new cell. It assumes that the programmer would insert text cell before a code cell to describe the content of the cell. 
     Regarding result cells, it just create a cell with the given code cell number. 
@@ -51,11 +51,15 @@ def new_cell(cell_type=CODE, num=-1):
     if not cell_type in supported_cell_types: 
         print('This type of cells is not supported')
         return 
+    #if num is given, create a cell of this number and return.
     if num == -1:
         if code_iteration == -1:
             code_iteration = get_iteration()
+            num = code_iteration
     else:
-        cell_name = get_cell_name(num, cell_type=cell_type) 
+        Path(get_cell_name(num, cell_type, extension)).touch()
+        return 
+    cell_name = get_cell_name(num, cell_type=cell_type, extension) 
         if os.path.isfile(cell_name):
             reply = input('This file already exists. Would you like to replace it with a new one?(y/n) \n').lower()
             if reply=='y':
@@ -63,39 +67,37 @@ def new_cell(cell_type=CODE, num=-1):
                 Path(cell_name).touch()
             elif reply =='n':
                 return 
-        Path(cell_name).touch() 
-        return
     
     if cell_type == CODE:
-        Path(str(CODE + DASH + str(code_iteration) + DOT + project_language)).touch()  
+        Path(cell_name).touch() #code cells is the default.
         code_iteration +=1 
         text_iteration = code_iteration + 1
     elif cell_type == TEXT:
-        Path(str(TEXT+ DASH + str(text_iteration) + DOT + project_language)).touch()  
+        Pathget_cell_name(text_iteration, cell_type, extension)).touch()(
         text_iteration +=1 
         code_iteration =text_iteration
     elif cell_type == RESULT: 
-        Path(str(RESULT + DASH + str(code_iteration) + DOT + project_language )).touch()
+        Path(get_cell_name(code_iteration, cell_type, extension)).touch() 
 
 # create new code cell
 def ncc():
     """
     This function creates a new code cell
     """
-    new_cell(cell_type=CODE)
+    new_cell(cell_type=CODE, extension=PY)
 
 # create new text cell 
 def ntc():
     """
     This function creates a new text cell
     """
-    new_cell(cell_type=TEXT) 
+    new_cell(cell_type=TEXT, extension=TXT) 
 
 def nrc(num):
     """
     This function creates a new results cell.
     """
-    new_cell(cell_type=RESULT, num=num)
+    new_cell(cell_type=RESULT, num=num, extension=RES)
 
 #running cells  
 #The functions of running cells independently are  implemented in nb_functionalities.ipy
@@ -112,7 +114,7 @@ def run_all(result_file=True):
     ALL_CODE = 'all_code.' + extensions[0]
     ALL_RESULTS = 'all_results.' + RES
     files = os.listdir() 
-    files = [f for f in files if f.find(DOT + extensions[0])!= -1 and f.find(CODE + DASH) != -1 and f!= ALL_CODE ] 
+    files = [f for f in files if f[0].isdigit() and  f.find(DOT + extensions[0])!= -1] 
     files.sort() 
     code = str()
     for file in files:
@@ -129,6 +131,12 @@ def run_all(result_file=True):
         os.system(str(commands[0] + SPACE + ALL_CODE + GREATER_THAN + ALL_RESULTS))
     else:
         os.system(str(commands[0] + SPACE + ALL_CODE))  
+
+def ra(result_file=False):
+    """
+    This function is an appreviation for run_all() function
+    """
+    run_all(result_file)
 
 #Functions to delete project and cells. 
 def delete_project(name= None):

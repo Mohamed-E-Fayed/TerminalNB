@@ -2,11 +2,50 @@
 import os 
 from constants  import *
 
+def get_extension(cell_type):
+    """
+    This function returns the extension corresponding to given cell type
+    """
+    extension=str()
+    if cell_type == CODE:
+        extension=project_language
+    elif cell_type == TEXT:
+        extension=RES
+    elif cell_type == RESULT:
+        extension=RES
+    return extension 
+
+def get_cell_num(name):
+    """
+    This function returns the number of cell mentioned from its name. It is used to extract numbers from complicated cell names. 
+    It assumes that the cell number is at its  beginning before the first  '-' or '.'. 
+    """
+    num = int(-1) 
+    if name.find(DASH) != -1:
+        num = int(name[:name.find(DASH)]) 
+    elif name.find(DOT) !=-1:
+        num = int(name[:name.find(DOT)])
+    else:
+        print('Error: Invalid file name')
+
+    return num 
+
+
 def get_cell_name(num, cell_type=CODE, extension='py'):
     """ 
     This function returns the name corresponding to the given number
     """
-    return str(cell_type + UNDERSCO + str(num) + DOT + extension)
+    name = str(str(num) + DOT + extension) 
+    files = os.listdir() 
+    files = [f for f in files if f.find(extension[0])!=-1 and f[0].isdigit()]
+
+    for file in files:
+        number = get_cell_num(file)
+        if num == number:
+            name = file
+            break
+    return name
+
 def get_iteration(cell_type='code'): 
     """
     This function returns the number of iteration should be used in the upcoming code or text cell to be created. e.g. if the last cell has the number of 'n', then it should return 'n+1' to be used as the number of the next cell when creating it.
