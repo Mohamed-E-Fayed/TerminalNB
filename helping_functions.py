@@ -20,16 +20,18 @@ def get_cell_num(name):
     This function returns the number of cell mentioned from its name. It is used to extract numbers from complicated cell names. 
     It assumes that the cell number is at its  beginning before the first  '-' or '.'. 
     """
-    num = int(-1) 
-    if name.find(DASH) != -1:
-        num = int(name[:name.find(DASH)]) 
-    elif name.find(DOT) !=-1:
-        num = int(name[:name.find(DOT)])
-    else:
-        print('Error: Invalid file name')
+    num = str()
+    if name[0].isdigit() :
+        if name.find(DASH) != -1 :
+            num = name[:name.find(DASH)] 
+        elif name.find(DOT) !=-1: 
+            num = name[:name.find(DOT)]
+        else:
+            print('Error: Invalid file name')
 
-    return num 
-
+    if not num.isdigit():
+        num = -1
+    return int(num) 
 
 def get_cell_name(num, cell_type=CODE, extension='py'):
     """ 
@@ -50,10 +52,12 @@ def get_iteration(cell_type='code'):
     """
     This function returns the number of iteration should be used in the upcoming code or text cell to be created. e.g. if the last cell has the number of 'n', then it should return 'n+1' to be used as the number of the next cell when creating it.
     """
+    global extensions 
 
     itr=0
     everything_in_directory = os.listdir()
-    files = [s for s in everything_in_directory if '.' in s]
+    files = [s for s in everything_in_directory if '.'+extensions[0] in s]
+    """
     for file in files:
         if any(char.isdigit() for char in file):
             if file[0:4] == cell_type:
@@ -65,6 +69,10 @@ def get_iteration(cell_type='code'):
                 if int_temp > itr: 
                     itr = int_temp + 1
 
+    """
+
+    files.sort() 
+    itr = get_cell_num(files[-1])
     return itr
 
 

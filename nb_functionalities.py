@@ -59,21 +59,21 @@ def new_cell(cell_type=CODE, num=-1, extension='py'):
     else:
         Path(get_cell_name(num, cell_type, extension)).touch()
         return 
-    cell_name = get_cell_name(num, cell_type=cell_type, extension) 
-        if os.path.isfile(cell_name):
-            reply = input('This file already exists. Would you like to replace it with a new one?(y/n) \n').lower()
-            if reply=='y':
-                os.remove(cell_name)
-                Path(cell_name).touch()
-            elif reply =='n':
-                return 
+    cell_name = get_cell_name(num, cell_type, extension) 
+    if os.path.isfile(cell_name):
+        reply = input('This file already exists. Would you like to replace it with a new one?(y/n) \n').lower()
+        if reply=='y':
+            os.remove(cell_name)
+            Path(cell_name).touch()
+        elif reply =='n':
+            return 
     
     if cell_type == CODE:
         Path(cell_name).touch() #code cells is the default.
         code_iteration +=1 
         text_iteration = code_iteration + 1
     elif cell_type == TEXT:
-        Pathget_cell_name(text_iteration, cell_type, extension)).touch()(
+        Path(get_cell_name(text_iteration, cell_type, extension)).touch()
         text_iteration +=1 
         code_iteration =text_iteration
     elif cell_type == RESULT: 
