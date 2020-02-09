@@ -1,6 +1,7 @@
 #Some functions to be used in other modules 
 import os 
 from constants  import *
+from variables import * 
 
 def get_extension(cell_type):
     """
@@ -52,27 +53,21 @@ def get_iteration(cell_type='code'):
     """
     This function returns the number of iteration should be used in the upcoming code or text cell to be created. e.g. if the last cell has the number of 'n', then it should return 'n+1' to be used as the number of the next cell when creating it.
     """
+
     global extensions 
-
     itr=0
-    everything_in_directory = os.listdir()
-    files = [s for s in everything_in_directory if '.'+extensions[0] in s]
-    """
-    for file in files:
-        if any(char.isdigit() for char in file):
-            if file[0:4] == cell_type:
-                temp = file[file.find(DASH)+1:] 
-                temp = temp[:temp.find(DOT)] 
-                if temp.find(DASH) != -1:
-                    temp = temp[:temp.find(DASH)]
-                int_temp = int(temp)
-                if int_temp > itr: 
-                    itr = int_temp + 1
+    files= os.listdir()
+    files = [f for f in files if f[0].isdigit()]
 
-    """
+    if cell_type == CODE:
+        files = [s for s in files if extensions[0] == s[s.rfind(DOT)+1:]]
+    elif cell_type == TEXT:
+        files = [s for s in  files if TXT == s[s.rfind(DOT)+1:]]
 
+    print(files)
     files.sort() 
-    itr = get_cell_num(files[-1])
+    itr = get_cell_num(files[-1]) + 1
+    print(itr) 
     return itr
 
 
