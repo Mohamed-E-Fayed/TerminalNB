@@ -34,10 +34,13 @@ def get_cell_num(name):
         num = -1
     return int(num) 
 
-def get_cell_name(num, cell_type=CODE, extension='py'):
+def get_cell_name(num, name=None, cell_type=CODE, extension='py'):
     """ 
     This function returns the name corresponding to the given number
-    """
+    """ 
+    if name: 
+        #It should be updated in the future.
+        return str(str(num) + DASH + name + DOT + extension) 
     name = str(str(num) + DOT + extension) 
     files = os.listdir() 
     files = [f for f in files if f.find(extension[0])!=-1 and f[0].isdigit()]
@@ -63,12 +66,11 @@ def get_iteration(cell_type='code'):
         files = [s for s in files if extensions[0] == s[s.rfind(DOT)+1:]]
     elif cell_type == TEXT:
         files = [s for s in  files if TXT == s[s.rfind(DOT)+1:]]
-
-    print(files)
-    files.sort() 
-    itr = get_cell_num(files[-1]) + 1
-    print(itr) 
-    return itr
+    
+    if files:
+        files.sort() 
+        itr = get_cell_num(files[-1]) 
+    return int(itr+1)
 
 
 def get_cell_programming_language(num):

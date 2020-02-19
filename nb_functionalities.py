@@ -37,7 +37,7 @@ def open_project(name):
     os.chdir(name)
 
 #create new cell 
-def new_cell(cell_type=CODE, num=-1, extension='py'): 
+def new_cell(name=None, cell_type=CODE, num=-1, extension='py'): 
     """
     Function to create a new cell. It assumes that the programmer would insert text cell before a code cell to describe the content of the cell. 
     Regarding result cells, it just create a cell with the given code cell number. 
@@ -53,13 +53,12 @@ def new_cell(cell_type=CODE, num=-1, extension='py'):
         return 
     #if num is given, create a cell of this number and return.
     if num == -1:
-        if code_iteration == -1:
-            code_iteration = get_iteration()
-            num = code_iteration
+        code_iteration = get_iteration()
+        num = code_iteration
     else:
-        Path(get_cell_name(num, cell_type, extension)).touch()
+        Path(get_cell_name(num, name,cell_type, extension)).touch()
         return 
-    cell_name = get_cell_name(num, cell_type, extension) 
+    cell_name = get_cell_name(num, name, cell_type, extension) 
     if os.path.isfile(cell_name):
         reply = input('This file already exists. Would you like to replace it with a new one?(y/n) \n').lower()
         if reply=='y':
@@ -73,25 +72,25 @@ def new_cell(cell_type=CODE, num=-1, extension='py'):
         code_iteration +=1 
         text_iteration = code_iteration + 1
     elif cell_type == TEXT:
-        Path(get_cell_name(text_iteration, cell_type, extension)).touch()
+        Path(get_cell_name(text_iteration, name, cell_type, extension)).touch()
         text_iteration +=1 
         code_iteration =text_iteration
     elif cell_type == RESULT: 
-        Path(get_cell_name(code_iteration, cell_type, extension)).touch() 
+        Path(get_cell_name(code_iteration, name, cell_type, extension)).touch() 
 
 # create new code cell
-def ncc():
+def ncc(num=-1, name=None):
     """
     This function creates a new code cell
     """
-    new_cell(cell_type=CODE, extension=PY)
+    new_cell(num=num, name=name, cell_type=CODE, extension=PY)
 
 # create new text cell 
-def ntc():
+def ntc(num=-1, name=None):
     """
     This function creates a new text cell
     """
-    new_cell(cell_type=TEXT, extension=TXT) 
+    new_cell(num=num, name=name, cell_type=TEXT, extension=TXT) 
 
 def nrc(num):
     """

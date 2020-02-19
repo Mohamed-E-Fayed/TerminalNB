@@ -3,8 +3,8 @@
 import os 
 from enum import Enum 
 
-code_iteration = int()
-text_iteration = int()
+code_iteration = int(-1)
+text_iteration = int(-1)
 project_name = str()
 project_language= str('py') 
 project_path = os.getcwd()
