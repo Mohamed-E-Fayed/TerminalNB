@@ -86,3 +86,23 @@ def get_cell_programming_language(num):
     for key, value in commands.itritems():
         cmdlst.append(value) 
     return cmdlst.index(extension) 
+
+def organize_cells():
+    """
+    This functions  organize the cells numbers in case   it  became unordered according to numbers due to delete, adding a cell in different place, ...etc. 
+    """
+    files = os.listdir()
+    files = [f for f in files if extensions[0] in f]
+    files.sort() 
+
+    itr = 0 
+    for file in files:
+        itr +=1 
+        if not  str(itr) in file:
+            if file.find(DASH) !=-1:
+                file[:file.find(DASH)] = str(itr)
+            elif file.find(DOT)!= -1:
+                file[:file.find(DOT)] = str(itr)  
+    #continue 
+    # make sure to update files names and to handle corresponding text cells. 
+

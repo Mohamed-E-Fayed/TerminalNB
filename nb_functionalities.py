@@ -57,6 +57,7 @@ def new_cell(name=None, cell_type=CODE, num=-1, extension='py'):
         num = code_iteration
     else:
         Path(get_cell_name(num, name,cell_type, extension)).touch()
+        print(get_cell_name(num, name,cell_type, extension) + ' file has been created') 
         return 
     cell_name = get_cell_name(num, name, cell_type, extension) 
     if os.path.isfile(cell_name):
@@ -64,38 +65,45 @@ def new_cell(name=None, cell_type=CODE, num=-1, extension='py'):
         if reply=='y':
             os.remove(cell_name)
             Path(cell_name).touch()
+            print(cell_name +  ' file has been created')
         elif reply =='n':
             return 
     
     if cell_type == CODE:
         Path(cell_name).touch() #code cells is the default.
+        print(cell_name +  ' file has been created') 
         code_iteration +=1 
         text_iteration = code_iteration + 1
     elif cell_type == TEXT:
         Path(get_cell_name(text_iteration, name, cell_type, extension)).touch()
+        print(get_cell_name(text_iteration, name, cell_type, extension) + ' file has been created')
         text_iteration +=1 
         code_iteration =text_iteration
     elif cell_type == RESULT: 
         Path(get_cell_name(code_iteration, name, cell_type, extension)).touch() 
+        print(get_cell_name(code_iteration, name, cell_type, extension) + ' file has been created')
 
 # create new code cell
-def ncc(num=-1, name=None):
+def ncc( name=None, num=-1):
     """
     This function creates a new code cell
     """
     new_cell(num=num, name=name, cell_type=CODE, extension=PY)
 
 # create new text cell 
-def ntc(num=-1, name=None):
+def ntc( name=None, num=-1):
     """
     This function creates a new text cell
     """
     new_cell(num=num, name=name, cell_type=TEXT, extension=TXT) 
 
-def nrc(num):
+def nrc(num=None):
     """
     This function creates a new results cell.
     """
+    if num is None:
+        print('This function must have an input number')
+        return 
     new_cell(cell_type=RESULT, num=num, extension=RES)
 
 #running cells  
