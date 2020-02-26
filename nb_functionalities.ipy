@@ -2,13 +2,16 @@
 from  helping_functions import * 
 from constants import *  
 from variables import * 
+import os 
 
 def run_cell(num, result_file= False): 
     """
     This function runs a cell given its name. This function uses the '%run"  magic command with '-i' option. 
     """
     name = get_cell_name(num)
-    %run -i $name 
+    name = name[:name.rfind(DOT)]
+    project_path = os.getcwd() 
+    %run -i "$project_path/$name" 
 
 def rc(num, result_file = False): 
     """
