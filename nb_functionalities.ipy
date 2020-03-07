@@ -20,3 +20,23 @@ def rc(num, result_file = False):
     run_cell(num, result_file)
 
 
+def run_all_from(num):
+    """
+    This function runs all cells starting from cell of given number. 
+    e.g. Assume you have folder containing 1.py, 2.py and 3.py, 
+    if you give it '2', it will run onlhy 2.py and 3.py
+    """
+    project_path = os.getcwd()
+    files = os.listdir() 
+    files = [f for f in files if '.py' in f]
+    files.sort()
+    files = files[files.index(get_cell_name(num)) +1:]
+    for file in files:
+        file = file[:-3]
+        %run -i "$project_path/$file"
+
+def raf(num):
+    """
+    This function is an appreviation for run_all_from(num)
+    """
+    run_all_from(num)
