@@ -3,7 +3,9 @@ from  helping_functions import *
 from constants import *  
 from variables import * 
 import os 
+from functools import singledispatch 
 
+@singledispatch
 def run_cell(num, result_file= False): 
     """
     This function runs a cell given its name. This function uses the '%run"  magic command with '-i' option. 
@@ -12,6 +14,18 @@ def run_cell(num, result_file= False):
     name = name[:name.rfind(DOT)]
     project_path = os.getcwd() 
     %run -i "$project_path/$name" 
+
+@run_cell.register(list)
+def run_cell(lst, result_file= False): 
+    """
+    This function runs a cell given its name. This function uses the '%run"  magic command with '-i' option. 
+This alternative aims to run multiple cells in their order.
+    """
+    project_path = os.getcwd() 
+    for i in lst:
+        name = get_cell_name(num)
+        name = name[:name.rfind(DOT)]
+        %run -i "$project_path/$name" 
 
 def rc(num, result_file = False): 
     """
