@@ -5,8 +5,21 @@ from variables import *
 import os 
 from functools import singledispatch 
 
+"""
 @singledispatch
-def run_cell(num, result_file= False): 
+def run_cell(lst=[], result_file= False): 
+    
+    #This function runs a cell given its name. This function uses the '%run"  magic command with '-i' option. 
+    #This alternative aims to run multiple cells in their order.
+    
+    project_path = os.getcwd() 
+    for num in lst:
+        name = get_cell_name(num)
+        name = name[:name.rfind(DOT)]
+        %run -i "$project_path/$name" 
+"""
+#@run_cell.register(int)
+def run_cell(num=int(0), result_file= False): 
     """
     This function runs a cell given its name. This function uses the '%run"  magic command with '-i' option. 
     """
@@ -15,17 +28,7 @@ def run_cell(num, result_file= False):
     project_path = os.getcwd() 
     %run -i "$project_path/$name" 
 
-@run_cell.register(list)
-def run_cell(lst, result_file= False): 
-    """
-    This function runs a cell given its name. This function uses the '%run"  magic command with '-i' option. 
-This alternative aims to run multiple cells in their order.
-    """
-    project_path = os.getcwd() 
-    for num in lst:
-        name = get_cell_name(num)
-        name = name[:name.rfind(DOT)]
-        %run -i "$project_path/$name" 
+
 
 def rc(num, result_file = False): 
     """
@@ -37,7 +40,8 @@ def run_cell_range(start, end):
     """
     This function runs cells from start till end -1 , similar to convention used in lists
     """
-    rc(list(range(start, end)))
+    for i in range(start, end):
+        rc(i)
 
 def rcr(start, end):
     """
