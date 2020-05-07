@@ -33,6 +33,17 @@ def rc(num, result_file = False):
     """
     run_cell(num, result_file)
 
+def run_cell_range(start, end):
+    """
+    This function runs cells from start till end -1 , similar to convention used in lists
+    """
+    rc(list(range(start, end)))
+
+def rcr(start, end):
+    """
+    appreviation for run_cell_range(start, end)
+    """
+    run_cell_range(start, end)
 
 def run_all_from(num):
     """
