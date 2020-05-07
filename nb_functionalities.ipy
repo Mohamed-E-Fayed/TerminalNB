@@ -22,7 +22,7 @@ def run_cell(lst, result_file= False):
 This alternative aims to run multiple cells in their order.
     """
     project_path = os.getcwd() 
-    for i in lst:
+    for num in lst:
         name = get_cell_name(num)
         name = name[:name.rfind(DOT)]
         %run -i "$project_path/$name" 
