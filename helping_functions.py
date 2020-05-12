@@ -1,4 +1,6 @@
-#Some functions to be used in other modules 
+# This file contains either functions to
+# help in editing (i.e. utility functions) e.g. where_is(string) 
+# or some functions to be used in other modules e.g. get_cell_name(args)
 import os 
 from constants  import *
 from variables import * 
@@ -106,3 +108,31 @@ def organize_cells():
     #continue 
     # make sure to update files names and to handle corresponding text cells. 
 
+
+def where_is(string):
+    """
+    This function is used to search for a specific string in all projects files.
+    """
+    files=[f for f in os.listdir()]
+    for file in files:
+        exists=False
+        with open(file, 'r') as f:
+            lines = f.read().split('\n')
+            for line in lines:
+                if string in line:
+                    exists=True
+                    print(lines.index(line), ' ', line)
+        if not exists:
+            print('file {} does not contain {}'.format(file, string))
+
+def whereis(string):
+    """
+    another naming for where_is(string)
+    """
+    where_is(string)
+
+def ws(string):
+    """
+    appreviation for where_is(string)
+    """
+    where_is(string)
