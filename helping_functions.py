@@ -120,13 +120,14 @@ def where_is(string, show_all_files_status=False):
     files.sort()
     for file in files:
         exists=False
-        print('In file : ', file)
         with open(file, 'r') as f:
-            lines = f.read().split('\n')
+            lines = f.readlines()
             for line in lines:
                 if string in line:
-                    exists=True
-                    print(lines.index(line), ' ', line)
+                    if not exists: # this means that its the first result in the file 
+                        print('in file {}'.format(file))
+                        exists=True
+                    print(lines.index(line), ' ', line.replace('\n', ''))
         if (not exists) and show_all_files_status:
             print('This file does not contain {}'.format(string))
 
