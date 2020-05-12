@@ -113,9 +113,13 @@ def where_is(string):
     """
     This function is used to search for a specific string in all projects files.
     """
-    files=[f for f in os.listdir()]
+    files=[f for f in os.listdir() if 'py' in f or 'txt' in f]
+    if len(files)==0:
+        print('empty directory')
+        return 
     for file in files:
         exists=False
+        print('In file : ', file)
         with open(file, 'r') as f:
             lines = f.read().split('\n')
             for line in lines:
@@ -123,7 +127,7 @@ def where_is(string):
                     exists=True
                     print(lines.index(line), ' ', line)
         if not exists:
-            print('file {} does not contain {}'.format(file, string))
+            print('This file does not contain {}'.format(string))
 
 def whereis(string):
     """
