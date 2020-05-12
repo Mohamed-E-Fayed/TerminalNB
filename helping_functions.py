@@ -117,6 +117,7 @@ def where_is(string):
     if len(files)==0:
         print('empty directory')
         return 
+    files.sort()
     for file in files:
         exists=False
         print('In file : ', file)
