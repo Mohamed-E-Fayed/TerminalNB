@@ -109,7 +109,7 @@ def organize_cells():
     # make sure to update files names and to handle corresponding text cells. 
 
 
-def where_is(string):
+def where_is(string, show_all_files_status=False):
     """
     This function is used to search for a specific string in all projects files.
     """
@@ -127,17 +127,17 @@ def where_is(string):
                 if string in line:
                     exists=True
                     print(lines.index(line), ' ', line)
-        if not exists:
+        if (not exists) and show_all_files_status:
             print('This file does not contain {}'.format(string))
 
-def whereis(string):
+def whereis(string, show_all_files_status=False):
     """
     another naming for where_is(string)
     """
-    where_is(string)
+    where_is(string, show_all_files_status)
 
-def ws(string):
+def ws(string, show_all_files_status=False):
     """
     appreviation for where_is(string)
     """
-    where_is(string)
+    where_is(string, show_all_files_status)
