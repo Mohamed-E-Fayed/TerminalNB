@@ -19,6 +19,7 @@ def run_cell(lst=[], result_file= False):
         %run -i "$project_path/$name" 
 """
 #@run_cell.register(int)
+
 def run_cell(num=int(0), result_file= False): 
     """
     This function runs a cell given its name. This function uses the '%run"  magic command with '-i' option. 
@@ -27,8 +28,6 @@ def run_cell(num=int(0), result_file= False):
     name = name[:name.rfind(DOT)]
     project_path = os.getcwd() 
     %run -i "$project_path/$name" 
-
-
 
 def rc(num, result_file = False): 
     """

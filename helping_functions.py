@@ -113,7 +113,9 @@ def where_is(string, show_all_files_status=False):
     """
     This function is used to search for a specific string in all projects files.
     """
-    files=[f for f in os.listdir() if 'py' in f or 'txt' in f]
+    files=os.listdir()
+    files=[f for f in files if f[f.rfind('.')+1:] in ['py', 'txt']]
+    print('files:\n', files)
     if len(files)==0:
         print('empty directory')
         return 
