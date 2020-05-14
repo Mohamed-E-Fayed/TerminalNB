@@ -115,10 +115,13 @@ def where_is(string, show_all_files_status=False):
     """
     files=os.listdir()
     files=[f for f in files if f[f.rfind('.')+1:] in ['py', 'txt']]
-    print('files:\n', files)
     if len(files)==0:
         print('empty directory')
         return 
+    
+    if 'all_code.py' in files:
+        files.remove('all_code.py')
+    
     files.sort()
     for file in files:
         exists=False
