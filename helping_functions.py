@@ -132,7 +132,7 @@ def where_is(string, show_all_files_status=False):
                     if not exists: # this means that its the first result in the file 
                         print('in file {}'.format(file))
                         exists=True
-                    print(lines.index(line), ' ', line.replace('\n', ''))
+                    print(lines.index(line)+1, ' ', line.replace('\n', ''))
         if (not exists) and show_all_files_status:
             print('This file does not contain {}'.format(string))
 
